@@ -1,74 +1,40 @@
 package com.ibm.inventory_management.services;
 
-import java.io.IOException;
-import java.util.List;
-import javax.annotation.PostConstruct;
-import java.net.URL;
-import java.net.MalformedURLException;
+import static java.util.Arrays.asList;
 
-import com.cloudant.client.api.CloudantClient;
-import com.cloudant.client.api.ClientBuilder;
-import com.cloudant.client.api.Database;
+import java.util.List;
+
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.ibm.inventory_management.config.CloudantConfig;
 import com.ibm.inventory_management.models.StockItem;
-
-
-
-
-//@Profile("!mock")
 
 @Service
 @Primary
 public class StockItemService implements StockItemApi {
-    @Bean
-    public static CloudantClient buildCloudant(CloudantConfig config) throws CloudServicesException { 
-        System.out.println("Config: " + config);
-        URL url = null;
-        try {
-            url = new URL(config.getUrl());
-        } catch (MalformedURLException e) {
-            throw new CloudServicesException("Invalid service URL specified", e);
-        }
-       
-       return ClientBuilder
-                .url(url)
-                .iamApiKey(config.getApikey())
-                //.username(config.getUsername())
-                //.password(config.getPassword())
-                .build();
-    }
-    private CloudantConfig config;
-    private CloudantClient client;
-    private Database db = null;
-
-    public StockItemService(CloudantConfig config, @Lazy CloudantClient client) {
-        this.config = config;
-        this.client = client;
-    }
-
-    @PostConstruct
-    public void init() {
-        db = client.database(config.getDatabaseName(), true);
-    }
-
     @Override
-    public List<StockItem> listStockItems() throws Exception {
-
-        try {
-            return db.getAllDocsRequestBuilder()
-                    .includeDocs(true)
-                    .build()
-                    .getResponse()
-                    .getDocsAs(StockItem.class);
-
-        } catch (IOException e) {
-            throw new Exception("", e);
-        }
+    public List<StockItem> listStockItems() {
+        return asList(
+                new StockItem("1")
+                        .withName("Item 1")
+                        .withStock(100)
+                        .withPrice(10.5)
+                        .withManufacturer("Sony"),
+                new StockItem("2")
+                        .withName("Item 2")
+                        .withStock(150)
+                        .withPrice(100.0)
+                        .withManufacturer("Insignia"),
+                new StockItem("3")
+                        .withName("Item 3")
+                        .withStock(10)
+                        .withPrice(1000.0)
+                        .withManufacturer("Panasonic"),
+                new StockItem("4")
+                        .withName("Item 4")
+                        .withStock(9)
+                        .withPrice(990.0)
+                        .withManufacturer("JVC")
+        );
     }
 }
