@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ibm.inventory_management.models.StockItem;
 
 @Service
-@Primary
+@Profile("mock")
 public class StockItemMockService implements StockItemApi {
     @Override
     public List<StockItem> listStockItems() {
