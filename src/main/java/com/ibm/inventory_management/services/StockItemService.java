@@ -16,7 +16,7 @@ public class StockItemService implements StockItemApi {
     public List<StockItem> listStockItems() {
         return asList(
                 new StockItem("1")
-                        .withName("Item 1")
+                        .withName("Item 141")
                         .withStock(100)
                         .withPrice(10.5)
                         .withManufacturer("Sony"),
