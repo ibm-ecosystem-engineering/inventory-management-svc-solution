@@ -21,7 +21,7 @@ public class StockItemService implements StockItemApi {
                         .withPrice(10.5)
                         .withManufacturer("Sony"),
                 new StockItem("2")
-                        .withName("Item 2")
+                        .withName("Item 221")
                         .withStock(150)
                         .withPrice(100.0)
                         .withManufacturer("Insignia"),
